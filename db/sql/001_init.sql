@@ -35,5 +35,5 @@ CREATE TABLE IF NOT EXISTS appointment (
     book_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_patient FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE,
     CONSTRAINT fk_slot FOREIGN KEY (slot_id) REFERENCES slot(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_appointment (patient_id, slot_id)
+    UNIQUE KEY unique_appointment (slot_id)
 );

@@ -79,6 +79,7 @@ router.post("/", async (req, res) => {
         id: slot_id,
       },
       transaction: t,
+      lock: t.LOCK.UPDATE,
     });
 
     // if slot not found return error response
