@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { validatePatient } = require("../middleware/validate");
 const { Patient } = require("../db/db");
 
 router.get("/", async (_req, res) => {
@@ -15,7 +16,7 @@ router.get("/", async (_req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validatePatient, async (req, res) => {
   try {
     // get data from request
     const { first_name, last_name, phone, email } = req.body;
