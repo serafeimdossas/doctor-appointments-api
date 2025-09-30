@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  da_db:
+    image: mysql:8.0
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    environment:
+      MYSQL_ROOT_PASSWORD: $DA_DB_ROOT_PASS
+      MYSQL_DATABASE: $DA_DB_DB
+      MYSQL_USER: $DA_DB_USER
+      MYSQL_PASSWORD: $DA_DB_USER_PASS
+    tmpfs:
+      - /var/lib/mysql
+    volumes:
+      - ./db/sql:/docker-entrypoint-initdb.d:ro
+    ports:
+      - 3306:3306
+
+  da_api:
+    build: .
+    environment:
+      DB_URL: $DA_DB_URL
+      API_PORT: $DA_API_PORT
+    ports:
+      - $DA_API_PORT:$DA_API_PORT
