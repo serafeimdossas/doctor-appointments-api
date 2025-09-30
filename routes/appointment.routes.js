@@ -4,8 +4,12 @@ const moment = require("moment");
 const { SLOT_STATUS } = require("../utils/config");
 const { Slot, Patient, Appointment, Doctor, sequelize } = require("../db/db");
 
-router.get("/", async (_req, res) => {
+router.get("/", async (req, res) => {
   try {
+    const { doctor_id } = req.query;
+
+    // find all appointments for given doctor_id
+    // if not provided return all appointments
     const appointments = await Appointment.findAll({
       include: [
         {
@@ -17,10 +21,13 @@ router.get("/", async (_req, res) => {
           model: Slot,
           as: "slot",
           attributes: ["start_time", "end_time"],
+          required: true,
           include: {
             model: Doctor,
             as: "doctor",
             attributes: ["first_name", "last_name", "specialty"],
+            where: doctor_id ? { id: doctor_id } : undefined,
+            required: true,
           },
         },
       ],
@@ -38,7 +45,7 @@ router.get("/", async (_req, res) => {
         },
       }));
 
-    // return found appointments
+    // return formatted found appointments
     return res.status(200).send(formattedAppointments);
   } catch (error) {
     console.error("Failed to fetch appointments:", error);
