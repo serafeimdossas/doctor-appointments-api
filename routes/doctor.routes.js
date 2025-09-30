@@ -18,7 +18,7 @@ router.get("/", async (_req, res) => {
     return res.status(200).send(doctors);
   } catch (error) {
     console.error("Failed to fetch doctors:", error);
-    return res.status(500).json({ message: "Failed to fetch teams" });
+    return res.status(500).json({ message: "Failed to fetch doctors" });
   }
 });
 
