@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS doctor (
     address VARCHAR(255) NOT NULL,
     phone VARCHAR(15) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE
-)
+);
 
 CREATE TABLE IF NOT EXISTS patient (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS patient (
     last_name VARCHAR(100) NOT NULL,
     phone VARCHAR(15) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE
-)
+);
 
 CREATE TABLE IF NOT EXISTS slot (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS slot (
     status ENUM('available', 'booked') DEFAULT 'available',
     CONSTRAINT fk_doctor FOREIGN KEY (doctor_id) REFERENCES doctor(id) ON DELETE CASCADE,
     UNIQUE KEY unique_slot (doctor_id, start_time, end_time)
-)
+);
 
 CREATE TABLE IF NOT EXISTS appointment (
     id INT AUTO_INCREMENT PRIMARY KEY,
