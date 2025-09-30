@@ -19,7 +19,7 @@ services:
   da_api:
     build: .
     environment:
-      DB_URL: $DA_DB_URL
+      DATABASE_URL: $DA_DB_URL
       API_PORT: $DA_API_PORT
     ports:
       - $DA_API_PORT:$DA_API_PORT
