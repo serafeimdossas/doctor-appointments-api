@@ -20,9 +20,3 @@ INSERT IGNORE INTO slot (doctor_id, start_time, end_time, status) VALUES
 (2, '2025-11-01 12:00:00', '2025-11-01 12:30:00', 'available'),
 (3, '2025-11-01 13:00:00', '2025-11-01 13:30:00', 'available'),
 (3, '2025-11-01 14:00:00', '2025-11-01 14:30:00', 'available');
-
--- insert appointments
-INSERT IGNORE INTO appointment (patient_id, slot_id) VALUES
-(1, 1),
-(2, 3),
-(3, 5);
