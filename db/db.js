@@ -98,6 +98,7 @@ Slot.hasOne(Appointment, { foreignKey: "slot_id", as: "appointment" });
 Appointment.belongsTo(Slot, { foreignKey: "slot_id", as: "slot" });
 
 module.exports = {
+  sequelize,
   Doctor,
   Patient,
   Slot,

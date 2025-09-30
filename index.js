@@ -3,6 +3,7 @@ require("dotenv").config();
 const doctorRoutes = require("./routes/doctor.routes");
 const patientRoutes = require("./routes/patient.routes");
 const slotRoutes = require("./routes/slot.routes");
+const appointmentRoutes = require("./routes/appointment.routes");
 
 const app = express();
 const PORT = process.env.API_PORT || 8000;
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use("/doctors", doctorRoutes);
 app.use("/patients", patientRoutes);
 app.use("/availability", slotRoutes);
+app.use("/appointments", appointmentRoutes);
 
 app.get("/", (_req, res) => {
   return res.status(200).send({
