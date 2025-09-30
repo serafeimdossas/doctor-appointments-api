@@ -46,5 +46,5 @@ jobs:
           port: ${{ secrets.SERVER_SSH_PORT }}
           script: |
             cd /var/www/html/doctor-appointments-api/
-            sudo docker compose -f docker-compose.yml up -d --build --pull always # Build the Docker images and start the containers in detached mode
+            sudo docker compose -f docker-compose.yml up -d --build --pull always --force-recreate # Build the Docker images and start the containers in detached mode
             sudo docker system prune -a -f
