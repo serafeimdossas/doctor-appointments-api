@@ -58,16 +58,14 @@ DB_NAME=
 1. Create a doctor:
 
 ```
-curl
---location
---request POST '/doctors' \
---header 'Content-Type: application/json'
---data-raw '{
+curl -X POST {baseUrl}/doctors \
+  -H "Content-Type: application/json" \
+  -d '{
     "first_name": "Richard",
     "last_name": "Roe",
     "specialty": "Cardiology",
     "address": "413 Noble St",
     "phone": "123-45678",
     "email": "r.richard@email.com"
-}'
+  }'
 ```
