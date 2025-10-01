@@ -36,7 +36,7 @@ This API is developed using Node.js + Express.js + MySQL DB
 ```
 git clone https://github.com/serafeimdossas/doctor-appointments-api.git
 cd doctor-appointments-api
-docker compose -f docker-compose.yml up -d --buildker
+docker compose -f docker-compose.yml up -d --build
 ```
 
 ### 2) Set Environment Variables (.env)
@@ -54,6 +54,8 @@ DB_NAME=
 ```
 
 ### 3) Test API with the following requests
+
+1. Create a doctor:
 
 ```
 curl
