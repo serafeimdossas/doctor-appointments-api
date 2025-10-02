@@ -2,6 +2,12 @@
 
 A Node.js + Express API for managing doctors, patients, creating availability slots and booking appointments.
 
+## Live Demo
+
+- Demo version of this API: https://doctors-api.byserafeim.dev/doctors
+
+_Note: Adjust **endpoint** to use the rest of them_
+
 ## Technology Stack
 
 - Express HTTP API backed by Sequelize models for doctors, patients, slots, and appointments
