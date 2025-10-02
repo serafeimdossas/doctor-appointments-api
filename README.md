@@ -1,6 +1,6 @@
 # Doctor Appointments API
 
-A Node.js REST service for managing doctors, patients, creating availability slots and booking appointments.
+A Node.js + Express API for managing doctors, patients, creating availability slots and booking appointments.
 
 ## Technology Stack
 
