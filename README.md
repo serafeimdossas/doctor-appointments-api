@@ -1,64 +1,78 @@
 # Doctor Appointments API
 
-A lightweight REST API that manages **doctors**, **patients**, and **appointments**.
-It supports CRUD for core entities and conflict-aware appointment booking.
+A Node.js REST service for managing doctors, patients, creating availability slots and booking appointments.
 
-## API Stack
+## Technology Stack
 
-This API is developed using Node.js + Express.js + MySQL DB
+- Express HTTP API backed by Sequelize models for doctors, patients, slots, and appointments
+- Automatic MySQL schema creation and seed data
+- Containerized development stack powered by Docker Compose
 
-## Entities & Endpoints (brief)
+## HTTP Endpoints
+
+> Base URL defaults to `http://localhost:8000` when running through Docker Compose.
+
+| Method | Path            | Description                                                                                    |
+| ------ | --------------- | ---------------------------------------------------------------------------------------------- |
+| `GET`  | `/doctors`      | List registered doctors ordered by last name                                                   |
+| `POST` | `/doctors`      | Create a doctor (requires `first_name`, `last_name`, `specialty`, `address`, `phone`, `email`) |
+| `GET`  | `/patients`     | List registered patients ordered by last name                                                  |
+| `POST` | `/patients`     | Create a patient (requires `first_name`, `last_name`, `phone`, `email`)                        |
+| `GET`  | `/availability` | Retrieve future availability slots and their assigned doctor                                   |
+| `POST` | `/availability` | Publish a new availability slot for a doctor (`doctor_id`, `start_time`, `end_time`)           |
+| `GET`  | `/appointments` | List booked appointments with patient and slot details; filter with `?doctor_id=`              |
+| `POST` | `/appointments` | Book an appointment by pairing a `patient_id` with an available `slot_id`                      |
+
+## Run with Docker
+
+1. **Create a `.env` file** in the project root so Docker Compose can inject credentials. Required variables:
+
+   ```ini
+   DA_API_PORT=8000
+   DA_DB_ROOT_PASS=database_password
+   DA_DB_DB=database_name
+   DA_DB_USER=database_user
+   DA_DB_USER_PASS=database_user_password
+   DA_DB_URL=mysql_connection_url
+   ```
+
+2. **Start application**
+
+   ```bash
+   docker compose up --build
+   ```
+
+   - MySQL initializes with the SQL scripts under `db/sql/`
+   - The API becomes available at `http://localhost:${DA_API_PORT}` (default `8000`)
+
+3. **Smoke tests** once the containers report healthy:
+
+   ```bash
+   curl http://localhost:8000/doctors
+   ```
+
+   You should receive the seeded doctor records from the sample data set.
+
+4. **Shut down** when finished:
+
+   ```bash
+   docker compose down
+   ```
+
+## Example Requests
 
 ### Doctors
 
-- `GET /doctors` &rarr; Lists existing doctors
-- `POST /doctors` &rarr; Creates a new doctor object
+`GET /doctors` &rarr; Lists existing doctors
 
-### Patients
-
-- `GET /patients` &rarr; Lists existing patients
-- `POST /patients` &rarr; Creates a new patient object
-
-### Appointments
-
-- `GET /appointments?doctor_id=` &rarr; Lists booked appointments for given doctor
-- `POST /appointments` &rarr; Creates a new appointment
-
-### Availability
-
-- `GET /availability` &rarr; Lists available slots
-- `POST /availability` &rarr; Adds a new slot for a doctor
-
-## Local Installation & Run
-
-### 1) Clone Repository
-
-```
-git clone https://github.com/serafeimdossas/doctor-appointments-api.git
-cd doctor-appointments-api
-docker compose -f docker-compose.yml up -d --build
+```bash
+curl -X GET http://localhost:8000/doctors
 ```
 
-### 2) Set Environment Variables (.env)
+`POST /doctors` &rarr; Creates a new doctor object
 
-Don't forget to set these env variables in the .env file
-
-```
-PORT=
-NODE_ENV=
-DB_HOST=
-DB_PORT=
-DB_USER=
-DB_PASSWORD=
-DB_NAME=
-```
-
-### 3) Test API with the following requests
-
-1. Create a doctor:
-
-```
-curl -X POST {baseUrl}/doctors \
+```bash
+curl -X POST http://localhost:8000/doctors \
   -H "Content-Type: application/json" \
   -d '{
     "first_name": "Richard",
@@ -67,5 +81,65 @@ curl -X POST {baseUrl}/doctors \
     "address": "413 Noble St",
     "phone": "123-45678",
     "email": "r.richard@email.com"
+  }'
+```
+
+### Patients
+
+`GET /patients` &rarr; Lists existing patients
+
+```bash
+curl -X GET http://localhost:8000/patients
+```
+
+`POST /patients` &rarr; Creates a new patient object
+
+```bash
+curl -X POST http://localhost:8000/patients \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "Jack",
+    "last_name": "Smith",
+    "phone": "+1-555-555-0100",
+    "email": "jack.smith@example.com"
+  }'
+```
+
+### Appointments
+
+`GET /appointments?doctor_id=` &rarr; Lists booked appointments for a given doctor (omit the query parameter to list all)
+
+```bash
+curl -X GET "http://localhost:8000/appointments?doctor_id=1"
+```
+
+`POST /appointments` &rarr; Creates a new appointment
+
+```bash
+curl -X POST http://localhost:8000/appointments \
+  -H "Content-Type: application/json" \
+  -d '{
+    "patient_id": 1,
+    "slot_id": 1
+  }'
+```
+
+### Availability
+
+`GET /availability` &rarr; Lists available slots
+
+```bash
+curl -X GET http://localhost:8000/availability
+```
+
+`POST /availability` &rarr; Adds a new slot for a doctor
+
+```bash
+curl -X POST http://localhost:8000/availability \
+  -H "Content-Type: application/json" \
+  -d '{
+    "doctor_id": 1,
+    "start_time": "2025-11-01T09:00:00Z",
+    "end_time": "2025-11-01T09:30:00Z"
   }'
 ```
