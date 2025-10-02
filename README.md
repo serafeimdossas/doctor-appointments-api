@@ -10,7 +10,7 @@ _Note: Adjust **endpoint** to use the rest of them_
 
 ## Technology Stack
 
-- Express HTTP API backed by Sequelize models for doctors, patients, slots, and appointments
+- Node.js + Express API with Sequelize for models doctors, patients, slots, and appointments
 - Automatic MySQL schema creation and seed data
 - Containerized development stack powered by Docker Compose
 
